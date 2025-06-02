@@ -12,6 +12,7 @@ ENV/
 car_documents/
 users.json
 document_metadata.json
+.env
 
 # IDE
 .vscode/
