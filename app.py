@@ -31,7 +31,7 @@ def show_login_page():
         password = st.text_input("Password", type="password")
         
         if st.button("Login"):
-            if username.lower() == "admin" and password == "admin123":
+            if username.lower() == "admin" and password == "Cseeng123#":
                 st.session_state.user = {"username": "admin", "is_admin": True}
                 st.rerun()
             else:
