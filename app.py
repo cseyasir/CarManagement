@@ -196,21 +196,19 @@ def show_login_page():
             username = username.upper()
         password = st.text_input("Password", type="password", key="login_password")
         
-        with st.form("login_form"):
-            submitted = st.form_submit_button("Login")
-            if submitted or (username and password):
-                if username and password:
-                    success, result = authenticate_user(username, password)
-                    if success:
-                        st.session_state.user = result
-                        if not result.get('is_admin'):
-                            st.session_state.user['vehicle_number'] = username
-                        st.success("Login successful!")
-                        st.rerun()
-                    else:
-                        st.error(result)
+        if st.button("Login"):
+            if username and password:
+                success, result = authenticate_user(username, password)
+                if success:
+                    st.session_state.user = result
+                    if not result.get('is_admin'):
+                        st.session_state.user['vehicle_number'] = username
+                    st.success("Login successful!")
+                    st.rerun()
                 else:
-                    st.error("Please fill in all fields")
+                    st.error(result)
+            else:
+                st.error("Please fill in all fields")
     
     with col2:
         st.header("New User? Register Here")
@@ -404,14 +402,16 @@ def show_main_app():
     show_footer()
 
 def main():
+    """Main application function"""
     if st.session_state.show_registration:
         show_registration_page()
     elif st.session_state.user is None:
         show_login_page()
-    elif st.session_state.user.get('is_admin'):
-        show_admin_panel()
     else:
-        show_main_app()
+        if st.session_state.user.get('is_admin'):
+            show_admin_panel()
+        else:
+            show_main_app()
 
 if __name__ == "__main__":
     main() 
